@@ -4,6 +4,7 @@ The data set "tidydata.txt" contains the averages of certain variables from the 
 The data set contains averages 66 variables, plus the 2 variables "activity" and "subject" over which the averages were computed. That makes 68 columns in total. These variables whose averages were computed and their counterparts in the original data set "features.txt". 
 
 | Name in tidydata.txt | Name in features.txt | 
+|------------ | -------------|
 | BodyAccXmean | tBodyAcc-mean()-X | 
 | BodyAccYmean | tBodyAcc-mean()-Y| 
 | BodyAccZmean | tBodyAcc-mean()-Z | 
@@ -71,6 +72,6 @@ The data set contains averages 66 variables, plus the 2 variables "activity" and
 | FreqBodyGyroJerkMagmean | fBodyBodyGyroJerkMag-mean()|
 | FreqBodyGyroJerkMagstd | fBodyBodyGyroJerkMag-std()|
 
-#Note on the units
+###Note on the units
 The data in "tidydata.txt" is average over the aforementioned variables in X_train.txt and X_test.txt files. Note that the data in those files is normalized and bounded between [-1,1].
 
