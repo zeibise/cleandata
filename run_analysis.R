@@ -1,0 +1,68 @@
+run_analysis <- function(){
+  #Read data
+  testdata<-read.table(file ="UCI HAR Dataset/test/X_test.txt")
+  traindata<-read.table(file ="UCI HAR Dataset/train/X_train.txt")
+  testlabels <-read.table(file ="UCI HAR Dataset/test/y_test.txt")
+  trainlabels <-read.table(file ="UCI HAR Dataset/train/y_train.txt")
+  testsubjects <-read.table(file ="UCI HAR Dataset/test/subject_test.txt")
+  trainsubjects <-read.table(file ="UCI HAR Dataset/train/subject_train.txt")
+  #merge train and test observations
+  merged<-rbind(testdata,traindata)
+  #Combine the train and test labels and make the data a factor.
+  labels<-rbind(testlabels,trainlabels)
+  labels<-factor(labels$V1,labels=c("walking","walking upstairs","walking downstairs","sitting","standing","laying"))
+  #Combine the subject data
+  subjects<-rbind(testsubjects,trainsubjects)
+  #Hand-pick the columns:
+  extracted<-cbind.data.frame(merged$V1,merged$V2,merged$V3,merged$V4,merged$V5,merged$V6)
+  extracted<-cbind(extracted,merged$V41,merged$V42,merged$V43,merged$V44,merged$V45,merged$V46)
+  extracted<-cbind(extracted,merged$V81,merged$V82,merged$V83,merged$V84,merged$V85,merged$V86)
+  extracted<-cbind(extracted,merged$V121,merged$V122,merged$V123,merged$V124,merged$V125,merged$V126)
+  extracted<-cbind(extracted,merged$V161,merged$V162,merged$V163,merged$V164,merged$V165,merged$V166)
+  extracted<-cbind(extracted,merged$V201,merged$V202)
+  extracted<-cbind(extracted,merged$V214,merged$V215)
+  extracted<-cbind(extracted,merged$V227,merged$V228)
+  extracted<-cbind(extracted,merged$V240,merged$V241)
+  extracted<-cbind(extracted,merged$V253,merged$V254)
+  extracted<-cbind(extracted,merged$V266,merged$V267,merged$V268,merged$V269,merged$V270,merged$V271)
+  extracted<-cbind(extracted,merged$V345,merged$V346,merged$V347,merged$V348,merged$V349,merged$V350)
+  extracted<-cbind(extracted,merged$V424,merged$V425,merged$V426,merged$V427,merged$V428,merged$V429)
+  extracted<-cbind(extracted,merged$V503,merged$V504)
+  extracted<-cbind(extracted,merged$V516,merged$V517)
+  extracted<-cbind(extracted,merged$V529,merged$V530)
+  extracted<-cbind(extracted,merged$V542,merged$V543)
+  #Add the subject and activity labels
+  extracted<-cbind(extracted, labels, subjects)
+  #Clean up variable names
+  columnnames=c("BodyAccXmean","BodyAccYmean","BodyAccZmean")
+  columnnames=c(columnnames,"BodyAccXstd","BodyAccYstd","BodyAccZstd")
+  columnnames=c(columnnames,"GravityAccXmean","GravityAccYmean","GravityAccZmean")
+  columnnames=c(columnnames,"GravityAccXstd","GravityAccYstd","GravityAccZstd")
+  columnnames=c(columnnames,"BodyAccJerkXmean","BodyAccJerkYmean","BodyAccJerkZmean")
+  columnnames=c(columnnames,"BodyAccJerkXstd","BodyAccJerkYstd","BodyAccJerkZstd")
+  columnnames=c(columnnames,"BodyGyroXmean","BodyGyroYmean","BodyGyroZmean")
+  columnnames=c(columnnames,"BodyGyroXstd","BodyGyroYstd","BodyGyroZstd")
+  columnnames=c(columnnames,"BodyGyroJerkXmean","BodyGyroJerkYmean","BodyGyroJerkZmean")
+  columnnames=c(columnnames,"BodyGyroJerkXstd","BodyGyroJerkYstd","BodyGyroJerkZstd")
+  columnnames=c(columnnames,"BodyAccMagmean","BodyAccMagstd")
+  columnnames=c(columnnames,"GravityAccMagmean","GravityAccMagstd")
+  columnnames=c(columnnames,"BodyAccJerkMagmean","GravityAccJerkMagstd")
+  columnnames=c(columnnames,"BodyGyroMagmean","BodyGyroMagstd")
+  columnnames=c(columnnames,"BodyGyroJerkMagmean","BodyGyroJerkMagstd")
+  #Frequencies
+  columnnames=c(columnnames,"FreqBodyAccXmean","FreqBodyAccYmean","FreqBodyAccZmean")
+  columnnames=c(columnnames,"FreqBodyAccXstd","FreqBodyAccYstd","FreqBodyAccZstd")
+  columnnames=c(columnnames,"FreqBodyAccJerkXmean","FreqBodyAccJerkYmean","FreqBodyAccJerkZmean")
+  columnnames=c(columnnames,"FreqBodyAccJerkXstd","FreqBodyAccJerkYstd","FreqBodyAccJerkZstd")
+  columnnames=c(columnnames,"FreqBodyGyroXmean","FreqBodyGyroYmean","FreqBodyGyroZmean")
+  columnnames=c(columnnames,"FreqBodyGyroXstd","FreqBodyGyroYstd","FreqBodyGyroZstd")
+  columnnames=c(columnnames,"FreqBodyAccMagmean","FreqBodyAccMagstd")
+  columnnames=c(columnnames,"FreqBodyAccJerkMagmean","FreqGravityAccJerkMagstd")
+  columnnames=c(columnnames,"FreqBodyGyroMagmean","FreqBodyGyroMagstd")
+  columnnames=c(columnnames,"FreqBodyGyroJerkMagmean","FreqBodyGyroJerkMagstd")
+  columnnames=c(columnnames,"Activity","Subject")
+  colnames(extracted)<-columnnames
+  #Create tidy data set
+  tidydata<-aggregate(extracted[,1:66],extracted[,67:68],FUN=mean)
+  write.table(tidydata, row.names =FALSE, file = "tidydata.txt")
+}
